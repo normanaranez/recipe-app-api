@@ -6,10 +6,4 @@ exlude =
     settings.py
     wsgi.py
     asgi.py
-    env/
-    venv/
-    .venv/
-    .git/
-    .github/
-    .vscode/
     
