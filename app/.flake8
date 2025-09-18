@@ -1,9 +1,8 @@
 [flake8]
-exlude =
+exclude =
     migrations
     __pycache__
     manage.py
     settings.py
     wsgi.py
     asgi.py
-    
