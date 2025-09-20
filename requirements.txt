@@ -2,6 +2,10 @@ asgiref==3.9.1
 Django==5.2.6
 django-filter==25.1
 djangorestframework==3.16.1
+flake8==7.3.0
 Markdown==3.9
-sqlparse==0.5.3
+mccabe==0.7.0
 psycopg2==2.9.10
+pycodestyle==2.14.0
+pyflakes==3.4.0
+sqlparse==0.5.3
