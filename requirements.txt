@@ -4,3 +4,4 @@ django-filter==25.1
 djangorestframework==3.16.1
 Markdown==3.9
 sqlparse==0.5.3
+psycopg2==2.9.10
