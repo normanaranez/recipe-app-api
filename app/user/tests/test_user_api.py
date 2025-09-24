@@ -9,8 +9,9 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 
-# URL for creating a new user
+# Define URLs for user creation and token generation
 CREATE_USER_URL = reverse('user:create')
+TOKEN_URL = reverse('user:token')
 
 # Helper function to create a user
 def create_user(**params):
@@ -87,3 +88,68 @@ class PublicUserApiTests(TestCase):
 
         # Assert that the user does not exist
         self.assertFalse(user_exists)
+
+    def test_create_token_for_user(self):
+        """Test generating a token for user."""
+        payload = {
+            'email': 'test@example.com',
+            'password': 'testpass123',
+            'name': 'Test User'
+        }
+
+        # Create a user
+        create_user(**payload)
+
+        # Generate token for the user
+        res = self.client.post(TOKEN_URL, {
+            'email': payload['email'],
+            'password': payload['password']
+        })
+
+        # Check the response status code
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        # Verify the token is returned in the response
+        self.assertIn('token', res.data)
+
+    def test_create_token_invalid_credentials(self):
+        """Test token is not created if invalid credentials are given."""
+        # Create a user with known credentials
+        create_user(
+            email='test@example.com',
+            password='testpass123',
+            name='Test User'
+        )
+
+        # Attempt to generate a token with invalid credentials
+        res = self.client.post(TOKEN_URL, {
+            'email': 'wrong@example.com',
+            'password': 'wrongpassword'
+        })
+
+        # Check the response status code
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Verify the token is not returned in the response
+        self.assertNotIn('token', res.data)
+
+    def test_create_token_blank_password(self):
+        """Test posting a blank password returns an error."""
+        # Create a user with known credentials
+        create_user(
+            email='test@example.com',
+            password='testpass123',
+            name='Test User'
+        )
+
+        # Attempt to generate a token with a blank password
+        res = self.client.post(TOKEN_URL, {
+            'email': 'test@example.com',
+            'password': ''
+        })
+
+        # Check the response status code
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Verify the token is not returned in the response
+        self.assertNotIn('token', res.data)
