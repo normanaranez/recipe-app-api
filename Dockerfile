@@ -1,7 +1,7 @@
 FROM python:3.13-alpine3.22
 LABEL maintainer="https://github.com/normanaranez"
 
-ENV PYTHONNUMBUFFERED=1
+ENV PYTHONUNBUFFERED=1
 
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
